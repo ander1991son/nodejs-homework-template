@@ -1,5 +1,13 @@
-const app = require('./app')
+const app = require("./app");
+const { connectionPromise } = require("./routes/api/db/conecction");
+const { PORT } = process.env;
 
-app.listen(3000, () => {
-  console.log("Server running. Use our API on port: 3000")
-})
+connectionPromise
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log("Database connection successful");
+    });
+  })
+  .catch((err) => {
+    console.log(`server not running. error message: ${err.message}`);
+  });
